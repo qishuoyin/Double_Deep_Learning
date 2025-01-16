@@ -12,6 +12,11 @@ FAST_NN_ATE: data generate (linear case)
 # import packages
 import numpy as np
 import pandas as pd
+import os
+
+
+# set relative project path for the project 'Double_Deep_Learning'
+path_project = os.path.dirname(__file__)
 
 
 # set seed
@@ -88,7 +93,7 @@ def write_csv_dataset(p, r, n, sigma_y, simulation):
     for t in range(simulation):
         X, T, Y, pi, mu, tau, B, f, u = generate_dataset(p, r, n, sigma_y)
         dataset = concat_dataset(X, T, Y)
-        path_outer = '/Users/Qishuo/Code/Double_Deep_Learning/data_simulation/'
+        path_outer = path_project + '/data_simulation/'
         path_inner = 'data_p_' + str(p) + '_sim_' + str(t) + '.csv'
         dataset.to_csv(path_outer + path_inner, index=False)
         print('p:' + str(p) + '; ' + 'simulation:' + str(t))
