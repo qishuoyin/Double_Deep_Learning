@@ -1,4 +1,4 @@
 .DS_Store
 .env
-test_dataset/
+test.py
 exp/exp1_method_compare/data_simulation/
