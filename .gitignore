@@ -1,5 +1,4 @@
 .DS_Store
 .env
 test_dataset/
-datasets/
-data_simulation/
+exp/exp1_method_compare/data_simulation/
