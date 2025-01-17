@@ -5,7 +5,7 @@ Created on Thu Sep 26 15:36:40 2024
 
 @author: Qishuo
 
-Double Deep Learning: data generate: additive model
+Double Deep Learning: data generate for additive model
 
 """
 
