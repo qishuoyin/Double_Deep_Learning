@@ -36,19 +36,19 @@ def generate_factor(p, r, n):
 
 # generate propensity
 def generate_propensity(f, u):
-    pi = 1 / (1 + np.exp(-( f[:, 0] + f[:, 1] + f[:, 2] + f[:, 3] + u[:, 0] + u[:, 1] + u[:, 2] + u[:, 3] + u[:, 4] )))  # treatment assignment with size (n, )
+    pi = 1 / (1 + np.exp(-( np.sin(f[:, 0]) + np.tan(f[:, 1]) + f[:, 2] + f[:, 3]**3 + np.sin(u[:, 0]) + np.tan(u[:, 1]) + u[:, 2] + u[:, 3]**3 + u[:, 4]**5 )))  # treatment assignment with size (n, )
     return pi
 
 
 # generate covaraite effect
 def generate_covariate_effect(f, u):
-    mu = 10 + f[:, 0] + f[:, 1] + f[:, 2] + u[:, 0] + u[:, 1] + u[:, 2] + u[:, 3]
+    mu = 10 + f[:, 0] + f[:, 1]**3 + np.sin(f[:, 2]) + u[:, 0] + u[:, 1]**3 + np.sin(u[:, 2]) + np.tan(u[:, 3])
     return mu
 
 
 # generate treatment effect
 def generate_treatment_effect(f, u):
-    tau = 5 + f[:, 3] + u[:, 4]
+    tau = 5 + np.sin(f[:, 3]) + np.tan(u[:, 4])
     return tau
 
 
@@ -108,7 +108,7 @@ p_vec = [10, 50, 100, 500, 1000, 5000, 10000] # number of covariates
 r = 4 # number of factors
 sigma_y = 0.25 # outcome noice level
 n = 1000 # number of observations
-simulation = 5 # 100 # time of simulations
+simulation = 100 # time of simulations
 
 # data generating process
 for p in p_vec:
