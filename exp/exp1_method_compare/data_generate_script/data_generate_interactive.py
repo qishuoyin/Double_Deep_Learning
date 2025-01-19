@@ -12,16 +12,12 @@ Double Deep Learning: data generate for interactive model
 # import packages
 import numpy as np
 import pandas as pd
-from pathlib import Path
+import os
 
 
 # set relative project path for the project 'Double_Deep_Learning'
-path_file = Path(__file__)
-path_folder = path_file.parent
-path_sub_exp = path_folder.parent
-path_exp = path_sub_exp.parent
-path_proj = path_exp.parent
-
+path_file = os.path.dirname(__file__)
+path_file_parent = os.path.dirname(os.getcwd())
 
 # set seed
 seed = 2024
@@ -97,7 +93,7 @@ def write_csv_dataset(p, r, n, sigma_y, simulation):
     for t in range(simulation):
         X, T, Y, pi, mu, tau, B, f, u = generate_dataset(p, r, n, sigma_y)
         dataset = concat_dataset(X, T, Y)
-        path_outer = 'path_sub_exp + '/data_simulation/'
+        path_outer = path_file_parent + '/data_simulation/'
         path_inner = 'data_interactive_p_' + str(p) + '_sim_' + str(t) + '.csv'
         dataset.to_csv(path_outer + path_inner, index=False)
         print('p:' + str(p) + '; ' + 'simulation:' + str(t))
