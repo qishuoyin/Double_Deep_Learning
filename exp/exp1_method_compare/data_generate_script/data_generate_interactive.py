@@ -94,7 +94,7 @@ def write_csv_dataset(p, r, n, sigma_y, simulation):
         X, T, Y, pi, mu, tau, B, f, u = generate_dataset(p, r, n, sigma_y)
         dataset = concat_dataset(X, T, Y)
         path_outer = path_file_parent + '/data_simulation/'
-        path_inner = 'data_interactive_p_' + str(p) + '_sim_' + str(t) + '.csv'
+        path_inner = 'data_p_' + str(p) + '_sim_' + str(t) + '.csv'
         dataset.to_csv(path_outer + path_inner, index=False)
         print('p:' + str(p) + '; ' + 'simulation:' + str(t))
         # only to check the preciseness of the codes
