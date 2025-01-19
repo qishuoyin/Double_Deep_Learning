@@ -14,4 +14,4 @@ module purge
 module load anaconda3/2024.2
 conda activate Double_Deep_Learning_env
 
-python data_generate_interactive.py
+python data_generate.py
