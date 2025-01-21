@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=run_Ganite_linear     # create a short name for your job
+#SBATCH --job-name=run_Ganite    # create a short name for your job
 #SBATCH --nodes=1                # node count
 #SBATCH --ntasks=1               # total number of tasks across all nodes
 #SBATCH --cpus-per-task=1        # cpu-cores per task (>1 if multi-threaded tasks)
@@ -15,4 +15,4 @@ module purge
 module load anaconda3/2024.2
 conda activate FAST_NN_ATE_env
 
-python run_Ganite_linear.py
+python run_Ganite.py
