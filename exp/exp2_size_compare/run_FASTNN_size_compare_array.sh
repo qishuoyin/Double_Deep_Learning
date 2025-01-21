@@ -18,6 +18,6 @@ echo "Executing on the machine:" $(hostname)
 
 module purge
 module load anaconda3/2024.2
-conda activate FAST_NN_ATE_env
+conda activate Double_Deep_Learning_env
 
 python run_FASTNN_size_compare_array.py 
