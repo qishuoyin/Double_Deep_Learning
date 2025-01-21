@@ -5,7 +5,7 @@ Created on Sun Sep 29 16:54:42 2024
 
 @author: Qishuo
 
-FAST_NN_ATE: read dataset and split variables
+Double Deep Learning: read dataset and split variables
 
 """
 
