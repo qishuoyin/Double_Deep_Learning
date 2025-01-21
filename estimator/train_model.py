@@ -5,7 +5,7 @@ Created on Thu Sep 26 16:07:56 2024
 
 @author: Qishuo
 
-FAST_NN_ATE: train model
+Double Deep Learning: training model
 
 """
 
