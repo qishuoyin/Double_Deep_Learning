@@ -12,6 +12,6 @@
 
 module purge
 module load anaconda3/2024.2
-conda activate FAST_NN_ATE_env
+conda activate Double_Deep_Learning_env
 
 python data_generate_size_compare.py
