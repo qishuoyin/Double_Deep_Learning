@@ -4,3 +4,6 @@ test.py
 exp/exp1_method_compare/data_simulation/
 exp/exp1_method_compare/result/
 exp/exp1_method_compare/variable/
+exp/exp2_size_compare/data_simulation/
+exp/exp2_size_compare/result/
+exp/exp2_size_compare/variable/
