@@ -12,7 +12,9 @@ FAST_NN_ATE: double robust deep learning factor model ATE estimator
 # import packages
 import numpy as np
 import torch
-
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from utility.utility_data import FASTmat
 from model.model_FASTNN import FactorAugmentedSparseThroughputNN
 from model.model_VanillaNN import VanillaNetBase

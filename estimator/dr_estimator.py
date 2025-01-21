@@ -11,6 +11,9 @@ FAST_NN_ATE: doule robust ATE estimator
 
 import numpy as np
 import scipy.stats 
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from estimator.dataloader import data_to_torch, data_torch_dataloader
 
 
