@@ -5,7 +5,7 @@ Created on Sun Sep 29 16:39:40 2024
 
 @author: Qishuo
 
-FAST_NN_ATE: doule robust ATE estimator
+Double Deep Learning: double robust ATE estimator
 
 """
 
