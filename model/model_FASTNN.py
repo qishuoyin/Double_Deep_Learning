@@ -5,7 +5,7 @@ Created on Thu Sep 26 16:04:58 2024
 
 @author: Qishuo
 
-FAST_NN_ATE: model structure -- FAST NN
+Double Deep Learning: model structure -- FAST NN
 
 """
 
