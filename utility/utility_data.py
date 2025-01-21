@@ -18,8 +18,15 @@ from scipy.sparse.linalg import eigs
 # utility function
 # read csv to numpy array
 def read_dataset_to_numpy(p, t, path_outer): 
-    #path_outer = '/Users/Qishuo/Desktop/FAST_NN_ATE/scripts/data_simulation_linear/'
     path_inner = 'data_p_' + str(p) + '_sim_' + str(t) + '.csv'
+    data_df = pd.read_csv(path_outer + path_inner)
+    data_np = data_df.to_numpy()
+    print('[read data] p:' + str(p) + '; ' + 'simulation:' + str(t))
+    return data_np
+
+## CHANGE TILL HERE
+def read_dataset_size_compare_to_numpy(p, n, t, path_outer): 
+    path_inner = 'data_p_' + str(p) + '_n_' + str(n) + '_sim_' + str(t) + '.csv'
     data_df = pd.read_csv(path_outer + path_inner)
     data_np = data_df.to_numpy()
     print('[read data] p:' + str(p) + '; ' + 'simulation:' + str(t))
