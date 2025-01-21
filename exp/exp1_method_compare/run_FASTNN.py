@@ -5,7 +5,7 @@ Created on Sun Sep 29 17:26:06 2024
 
 @author: Qishuo
 
-FAST_NN_ATE: function to run estimation by FASTNN model
+Double Deep Learning: script to run ATE estimation by FASTNN model
 
 """
 
@@ -13,10 +13,15 @@ FAST_NN_ATE: function to run estimation by FASTNN model
 import numpy as np
 import pandas as pd
 import torch
-
 from utility.utility_data import read_dataset_to_numpy
 from utility.utility_data import data_split_X_T_Y
 from estimator.ddl_estimator import DDL
+import os
+
+
+# set relative project path for the project 'Double_Deep_Learning'
+path_file = os.path.dirname(__file__)
+path_file_parent = os.path.dirname(os.getcwd())
 
 # run script on gpu if possible
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -44,6 +49,8 @@ N = 300
 data_path_outer = '/Users/Qishuo/Desktop/FAST_NN_ATE/scripts/data_simulation/data_simulation_linear/'
 file_path_outer = '/Users/Qishuo/Desktop/FAST_NN_ATE/scripts/result/result_linear/'
 optional_path_outer = '/Users/Qishuo/Desktop/FAST_NN_ATE/scripts/variable/variable_linear/'
+
+path_data_outer
 
 
 # simulation for low dimensional case
