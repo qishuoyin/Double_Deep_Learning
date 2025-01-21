@@ -46,11 +46,9 @@ L = 4
 N = 300
 
 # data and file path
-data_path_outer = '/Users/Qishuo/Desktop/FAST_NN_ATE/scripts/data_simulation/data_simulation_linear/'
-file_path_outer = '/Users/Qishuo/Desktop/FAST_NN_ATE/scripts/result/result_linear/'
-optional_path_outer = '/Users/Qishuo/Desktop/FAST_NN_ATE/scripts/variable/variable_linear/'
-
-path_data_outer
+path_data_outer = path_file + '/data_simulation/'
+path_result_outer = path_file + '/result_linear/'
+path_variable_outer = path_file + '/variable_linear/'
 
 
 # simulation for low dimensional case
@@ -82,7 +80,7 @@ for k in range(len(p_vec)):
         print('-----------------------------------')
         
         # import data
-        data = read_dataset_to_numpy(p, t, data_path_outer)
+        data = read_dataset_to_numpy(p, t, path_data_outer)
         X, T, Y = data_split_X_T_Y(data)
         
         # run functions
@@ -109,9 +107,9 @@ for k in range(len(p_vec)):
     path_inner_mu_hat = 'FAST_mu_hat_p_' + str(p) + '.csv'
     path_inner_tau_hat = 'FAST_tau_hat_p_' + str(p) + '.csv'
     
-    pd.DataFrame(pi_hat_mat).to_csv(optional_path_outer + path_inner_pi_hat, index=False)  
-    pd.DataFrame(mu_hat_mat).to_csv(optional_path_outer + path_inner_mu_hat, index=False)  
-    pd.DataFrame(tau_hat_mat).to_csv(optional_path_outer + path_inner_tau_hat, index=False)  
+    pd.DataFrame(pi_hat_mat).to_csv(path_variable_outer + path_inner_pi_hat, index=False) # optinal intermediate result 
+    pd.DataFrame(mu_hat_mat).to_csv(path_variable_outer + path_inner_mu_hat, index=False) # optinal intermediate result 
+    pd.DataFrame(tau_hat_mat).to_csv(path_variable_outer + path_inner_tau_hat, index=False) # optinal intermediate result 
     
     MSE = sum(np.square(ATE_hat_mat[k, :] - ATE_true)) / simulation
     MSE_list[k] = MSE
@@ -129,10 +127,10 @@ path_inner_MSE = 'FAST_MSE.csv'
 path_inner_ATE_ci_low_mean = 'FAST_ATE_ci_low_mean.csv'
 path_inner_ATE_ci_up_mean = 'FAST_ATE_ci_up_mean.csv'
 path_inner_coverage = 'FAST_coverage.csv'
-pd.DataFrame(ATE_hat_mat).to_csv(file_path_outer + path_inner_ATE, index=False)  
-pd.DataFrame(ATE_ci_low_mat).to_csv(file_path_outer + path_inner_ATE_ci_low, index=False) 
-pd.DataFrame(ATE_ci_up_mat).to_csv(file_path_outer + path_inner_ATE_ci_up, index=False)
-pd.DataFrame(MSE_list).to_csv(file_path_outer + path_inner_MSE, index=False)
-pd.DataFrame(ATE_ci_low_mean_list).to_csv(file_path_outer + path_inner_ATE_ci_low_mean, index=False)
-pd.DataFrame(ATE_ci_up_mean_list).to_csv(file_path_outer + path_inner_ATE_ci_up_mean, index=False)
-pd.DataFrame(coverage_list).to_csv(file_path_outer + path_inner_coverage, index=False)
+pd.DataFrame(ATE_hat_mat).to_csv(path_result_outer + path_inner_ATE, index=False)  
+pd.DataFrame(ATE_ci_low_mat).to_csv(path_result_outer + path_inner_ATE_ci_low, index=False) 
+pd.DataFrame(ATE_ci_up_mat).to_csv(path_result_outer + path_inner_ATE_ci_up, index=False)
+pd.DataFrame(MSE_list).to_csv(path_result_outer + path_inner_MSE, index=False)
+pd.DataFrame(ATE_ci_low_mean_list).to_csv(path_result_outer + path_inner_ATE_ci_low_mean, index=False)
+pd.DataFrame(ATE_ci_up_mean_list).to_csv(path_result_outer + path_inner_ATE_ci_up_mean, index=False)
+pd.DataFrame(coverage_list).to_csv(path_result_outer + path_inner_coverage, index=False)
