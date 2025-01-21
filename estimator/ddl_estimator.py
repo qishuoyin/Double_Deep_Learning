@@ -5,7 +5,7 @@ Created on Sat Oct 19 20:26:30 2024
 
 @author: Qishuo
 
-FAST_NN_ATE: double robust deep learning factor model ATE estimator
+Double Deep Learning: double robust deep learning factor model for ATE estimator
 
 """
 
