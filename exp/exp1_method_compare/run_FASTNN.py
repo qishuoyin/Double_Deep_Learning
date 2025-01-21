@@ -13,6 +13,7 @@ Double Deep Learning: script to run ATE estimation by FASTNN model
 import numpy as np
 import pandas as pd
 import torch
+
 from utility.utility_data import read_dataset_to_numpy
 from utility.utility_data import data_split_X_T_Y
 from estimator.ddl_estimator import DDL
@@ -47,8 +48,8 @@ N = 300
 
 # data and file path
 path_data_outer = path_file + '/data_simulation/'
-path_result_outer = path_file + '/result_linear/'
-path_variable_outer = path_file + '/variable_linear/'
+path_result_outer = path_file + '/result/'
+path_variable_outer = path_file + '/variable/'
 
 
 # simulation for low dimensional case
