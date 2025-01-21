@@ -4,16 +4,27 @@
 Created on Mon Sep 30 14:22:33 2024
 
 @author: Qishuo
+
+Double Deep Learning: script to run ATE estimation by Causal Forest (CF)
+
 """
 
 # import packages
 import numpy as np
 import pandas as pd
 import torch
-
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from utility.utility_data import read_dataset_to_numpy
 from utility.utility_data import data_split_X_T_Y
 from econml.grf import CausalForest
+import os
+
+
+# set relative project path for the project 'Double_Deep_Learning'
+path_file = os.path.dirname(__file__)
+path_file_parent = os.path.dirname(os.getcwd())
 
 
 # run script on gpu if possible

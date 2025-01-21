@@ -4,13 +4,18 @@
 Created on Mon Sep  2 15:07:47 2024
 
 @author: Qishuo
+
+Double Deep Learning: script to run ATE estimation by GANITE
+
 """
 
 # import packages
 import numpy as np
 import pandas as pd
 import torch
-
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from utility.utility_data import read_dataset_to_numpy
 from utility.utility_data import data_split_X_T_Y
 from ganite import Ganite

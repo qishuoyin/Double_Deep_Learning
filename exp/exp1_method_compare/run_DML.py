@@ -4,17 +4,28 @@
 Created on Mon Sep  2 12:10:18 2024
 
 @author: Qishuo
+
+Double Deep Learning: script to run ATE estimation by Double Machine Learning (DML) estimator
+
 """
 
 # import packages
 import numpy as np
 import pandas as pd
 import torch
-
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from utility.utility_data import read_dataset_to_numpy
 from utility.utility_data import data_split_X_T_Y
 from econml.dml import CausalForestDML
 from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
+import os
+
+
+# set relative project path for the project 'Double_Deep_Learning'
+path_file = os.path.dirname(__file__)
+path_file_parent = os.path.dirname(os.getcwd())
 
 
 # run script on gpu if possible
@@ -28,13 +39,12 @@ torch.manual_seed(seed)
 
 # intialize parameter value
 p_vec = [10, 50, 100, 500, 1000, 5000, 10000] # number of covariates
-simulation = 5 # 100 # time of simulations
+simulation = 100 # time of simulations
 ATE_true = 5.0
 
 # data and file path
-data_path_outer = '/Users/Qishuo/Desktop/FAST_NN_ATE/scripts/data_simulation/data_simulation_linear/'
-file_path_outer = '/Users/Qishuo/Desktop/FAST_NN_ATE/scripts/result/result_linear/'
-#optional_path_outer = '/Users/Qishuo/Desktop/FAST_NN_ATE/scripts/variable/variable_linear/'
+path_data_outer = path_file + '/data_simulation/'
+path_result_outer = path_file + '/result/'
 
 
 # simulation for low dimensional case
@@ -58,7 +68,7 @@ for k in range(len(p_vec)):
         print('-----------------------------------')
         
         # import data
-        data = read_dataset_to_numpy(p, t, data_path_outer)
+        data = read_dataset_to_numpy(p, t, path_data_outer)
         X, T, Y = data_split_X_T_Y(data)
         
         # run functions
@@ -93,13 +103,13 @@ path_inner_MSE = 'DML_MSE.csv'
 path_inner_ATE_ci_low_mean = 'DML_ATE_ci_low_mean.csv'
 path_inner_ATE_ci_up_mean = 'DML_ATE_ci_up_mean.csv'
 path_inner_coverage = 'DML_coverage.csv'
-pd.DataFrame(ATE_hat_mat).to_csv(file_path_outer + path_inner_ATE, index=False)  
-pd.DataFrame(ATE_ci_low_mat).to_csv(file_path_outer + path_inner_ATE_ci_low, index=False) 
-pd.DataFrame(ATE_ci_up_mat).to_csv(file_path_outer + path_inner_ATE_ci_up, index=False)
-pd.DataFrame(MSE_list).to_csv(file_path_outer + path_inner_MSE, index=False)
-pd.DataFrame(ATE_ci_low_mean_list).to_csv(file_path_outer + path_inner_ATE_ci_low_mean, index=False)
-pd.DataFrame(ATE_ci_up_mean_list).to_csv(file_path_outer + path_inner_ATE_ci_up_mean, index=False)
-pd.DataFrame(coverage_list).to_csv(file_path_outer + path_inner_coverage, index=False)
+pd.DataFrame(ATE_hat_mat).to_csv(path_result_outer + path_inner_ATE, index=False)  
+pd.DataFrame(ATE_ci_low_mat).to_csv(path_result_outer + path_inner_ATE_ci_low, index=False) 
+pd.DataFrame(ATE_ci_up_mat).to_csv(path_result_outer + path_inner_ATE_ci_up, index=False)
+pd.DataFrame(MSE_list).to_csv(path_result_outer + path_inner_MSE, index=False)
+pd.DataFrame(ATE_ci_low_mean_list).to_csv(path_result_outer + path_inner_ATE_ci_low_mean, index=False)
+pd.DataFrame(ATE_ci_up_mean_list).to_csv(path_result_outer + path_inner_ATE_ci_up_mean, index=False)
+pd.DataFrame(coverage_list).to_csv(path_result_outer + path_inner_coverage, index=False)
 
 
 

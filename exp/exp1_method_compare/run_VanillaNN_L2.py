@@ -5,7 +5,7 @@ Created on Sun Sep 29 17:08:55 2024
 
 @author: Qishuo
 
-FAST_NN_ATE: function to run estimation by Vanilla-L2 model
+Double Deep Learning: script to run ATE estimation by Vanilla-L2 model
 
 """
 
@@ -13,7 +13,9 @@ FAST_NN_ATE: function to run estimation by Vanilla-L2 model
 import numpy as np
 import pandas as pd
 import torch
-
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from utility.utility_data import read_dataset_to_numpy
 from utility.utility_data import data_split_X_T_Y
 from estimator.ddl_estimator import DDL
