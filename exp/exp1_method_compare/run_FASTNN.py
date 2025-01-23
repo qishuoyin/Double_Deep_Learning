@@ -54,7 +54,7 @@ path_result_outer = path_file + '/result/'
 path_variable_outer = path_file + '/variable/'
 
 
-# simulation for low dimensional case
+# run simulation
 ATE_hat_mat = np.zeros((len(p_vec), simulation))
 ATE_ci_low_mat = np.zeros((len(p_vec), simulation))
 ATE_ci_up_mat = np.zeros((len(p_vec), simulation))
