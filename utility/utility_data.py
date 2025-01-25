@@ -76,7 +76,7 @@ def variable_split_pi_mu_tau(variable):
 
 # utility function for dataset loading in real data application - NSW job 
 # read txt to numpy array
-def read_dataset_nsw_to_numpy(path_outer, path_inner):
+def read_dataset_txt_to_numpy(path_outer, path_inner):
     # data_df = pd.read_csv(path_outer + path_inner, delimiter='\t')
     data_np = np.loadtxt(path_outer + path_inner)
     return data_np
@@ -96,7 +96,7 @@ def data_nsw_split_X_T_Y(data):
     Y = data[:, len-1]
     return X, T, Y
 
-def read_dataset_nsw_cleaned_to_numpy(path_outer, path_inner): 
+def read_dataset_csv_to_numpy(path_outer, path_inner): 
     data_df = pd.read_csv(path_outer + path_inner)
     data_np = data_df.to_numpy()
     return data_np
