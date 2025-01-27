@@ -13,7 +13,11 @@ Written in job array to run on a cluster
 import os
 
 idx = int(os.environ["SLURM_ARRAY_TASK_ID"])
+<<<<<<< HEAD
+parameters = [100, 500, 1000, 2000, 5000] # n_vec 
+=======
 parameters = [50, 100, 200, 500, 1000, 2000] # n_vec 
+>>>>>>> refs/remotes/origin/main
 myparam = parameters[idx]
 
 # import packages
@@ -42,8 +46,13 @@ torch.manual_seed(seed)
 
 
 # intialize parameter value 
+<<<<<<< HEAD
+p_vec = [10, 100, 200, 500, 1000, 2000, 5000] # number of covariates
+n_vec = [100, 500, 1000, 2000, 5000] # size of dataset
+=======
 n_vec = [50, 100, 200, 500, 1000, 2000] # size of dataset
 p_vec = [10, 50, 100, 500, 1000, 5000, 10000] # number of covariates
+>>>>>>> refs/remotes/origin/main
 
 simulation = 100 # time of simulations
 ATE_true = 5.0
