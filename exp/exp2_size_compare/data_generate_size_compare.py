@@ -5,11 +5,7 @@ Created on Thu Sep 26 15:36:40 2024
 
 @author: Qishuo
 
-<<<<<<< HEAD
 Double Deep Learning: data generate (linear case)
-=======
-FAST_NN_ATE: data generate (linear case)
->>>>>>> refs/remotes/origin/main
 
 """
 
@@ -35,11 +31,7 @@ np.random.seed(seed)
 def generate_factor(p, r, n):
     B = np.random.uniform(low = -np.sqrt(3), high = np.sqrt(3), size = (p, r)) # loading matrix
     f = np.random.uniform(low = -1.0, high= 1.0, size = (n, r)) # latent factors
-<<<<<<< HEAD
     u = np.random.uniform(low = -1.0, high = 1.0, size = (n, p)) # idiosyncratic component
-=======
-    u = np.random.uniform(low = -1.0, high = 1.0, size = (n, p)) # covariates
->>>>>>> refs/remotes/origin/main
     return B, f, u
 
 
@@ -113,19 +105,12 @@ def write_csv_dataset(p, r, n, sigma_y, simulation):
 
 
 # intialize parameter values - for low dimesional case
-<<<<<<< HEAD
 p_vec = [10, 100, 200, 500, 1000, 2000, 5000] # number of covariates
 n_vec = [100, 500, 1000, 2000, 5000] # size of dataset
 r = 4 # number of factors
 sigma_y = 0.25 # outcome noice level
-simulation = 5 # time of simulations
-=======
-p_vec = [10, 50, 100, 500, 1000, 5000, 10000] # number of covariates
-n_vec = [50, 100, 200, 500, 1000, 2000] # size of dataset
-r = 4 # number of factors
-sigma_y = 0.25 # outcome noice level
 simulation = 100 # time of simulations
->>>>>>> refs/remotes/origin/main
+
 
 # data generating process
 for p in p_vec:

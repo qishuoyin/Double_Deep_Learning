@@ -36,13 +36,9 @@ torch.manual_seed(seed)
 
 
 # intialize parameter value 
-<<<<<<< HEAD
 p_vec = [10, 100, 200, 500, 1000, 2000, 5000] # number of covariates
 n_vec = [100, 500, 1000, 2000, 5000] # size of dataset
-=======
-n_vec = [50, 100, 200, 500, 1000, 2000] # size of dataset
-p_vec = [10, 50, 100, 500, 1000, 5000, 10000] # number of covariates
->>>>>>> refs/remotes/origin/main
+
 
 simulation = 100 # time of simulations
 ATE_true = 5.0
@@ -62,17 +58,10 @@ path_variable_outer = path_file + '/variable/'
 
 
 # simulation
-<<<<<<< HEAD
 MSE_list = np.zeros(len(p_vec))
 ATE_ci_low_mean_list = np.zeros(len(p_vec))
 ATE_ci_up_mean_list = np.zeros(len(p_vec))
 coverage_list = np.zeros(len(p_vec))
-=======
-MSE_list = np.zeros((len(p_vec), len(n_vec)))
-ATE_ci_low_mean_list = np.zeros((len(p_vec), len(n_vec)))
-ATE_ci_up_mean_list = np.zeros((len(p_vec), len(n_vec)))
-coverage_list = np.zeros((len(p_vec), len(n_vec)))
->>>>>>> refs/remotes/origin/main
 
 for l in range(len(n_vec)): 
     n = n_vec[l]
@@ -136,7 +125,6 @@ for l in range(len(n_vec)):
         pd.DataFrame(tau_hat_mat).to_csv(path_variable_outer + path_inner_tau_hat, index=False)  # optinal intermediate result 
         
         MSE = sum(np.square(ATE_hat_mat[k, :] - ATE_true)) / simulation
-<<<<<<< HEAD
         MSE_list[k] = MSE
         ATE_ci_low_mean = np.mean(ATE_ci_low_mat[k, :])
         ATE_ci_low_mean_list[k] = ATE_ci_low_mean
@@ -144,20 +132,10 @@ for l in range(len(n_vec)):
         ATE_ci_up_mean_list[k] = ATE_ci_up_mean
         coverage = coverage_count / simulation
         coverage_list[k] = coverage
-=======
-        MSE_list[k, l] = MSE
-        ATE_ci_low_mean = np.mean(ATE_ci_low_mat[k, :])
-        ATE_ci_low_mean_list[k, l] = ATE_ci_low_mean
-        ATE_ci_up_mean = np.mean(ATE_ci_up_mat[k, :])
-        ATE_ci_up_mean_list[k, l] = ATE_ci_up_mean
-        coverage = coverage_count / simulation
-        coverage_list[k, l] = coverage
->>>>>>> refs/remotes/origin/main
         
     path_inner_ATE = 'FAST_ATE_hat_n_' + str(n) + '.csv'
     path_inner_ATE_ci_low = 'FAST_ATE_ci_low_n_' + str(n) + '.csv'
     path_inner_ATE_ci_up = 'FAST_ATE_ci_up_n_' + str(n) + '.csv'
-<<<<<<< HEAD
     path_inner_MSE = 'FAST_MSE_n_' + str(n) + '.csv'
     path_inner_ATE_ci_low_mean = 'FAST_ATE_ci_low_mean_n_' + str(n) + '.csv'
     path_inner_ATE_ci_up_mean = 'FAST_ATE_ci_up_mean_n_' + str(n) + '.csv'
@@ -169,18 +147,3 @@ for l in range(len(n_vec)):
     pd.DataFrame(ATE_ci_low_mean_list).to_csv(path_result_outer + path_inner_ATE_ci_low_mean, index=False)
     pd.DataFrame(ATE_ci_up_mean_list).to_csv(path_result_outer + path_inner_ATE_ci_up_mean, index=False)
     pd.DataFrame(coverage_list).to_csv(path_result_outer + path_inner_coverage, index=False)
-=======
-    pd.DataFrame(ATE_hat_mat).to_csv(path_result_outer + path_inner_ATE, index=False)  
-    pd.DataFrame(ATE_ci_low_mat).to_csv(path_result_outer + path_inner_ATE_ci_low, index=False) 
-    pd.DataFrame(ATE_ci_up_mat).to_csv(path_result_outer + path_inner_ATE_ci_up, index=False)
-    
-
-path_inner_MSE = 'FAST_MSE.csv'
-path_inner_ATE_ci_low_mean = 'FAST_ATE_ci_low_mean.csv'
-path_inner_ATE_ci_up_mean = 'FAST_ATE_ci_up_mean.csv'
-path_inner_coverage = 'FAST_coverage.csv'
-pd.DataFrame(MSE_list).to_csv(path_result_outer + path_inner_MSE, index=False)
-pd.DataFrame(ATE_ci_low_mean_list).to_csv(path_result_outer + path_inner_ATE_ci_low_mean, index=False)
-pd.DataFrame(ATE_ci_up_mean_list).to_csv(path_result_outer + path_inner_ATE_ci_up_mean, index=False)
-pd.DataFrame(coverage_list).to_csv(path_result_outer + path_inner_coverage, index=False)
->>>>>>> refs/remotes/origin/main

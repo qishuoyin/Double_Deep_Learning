@@ -37,11 +37,7 @@ torch.manual_seed(seed)
 
 # intialize parameter value 
 p_vec = [10, 50, 100, 500, 1000, 5000, 10000] # number of covariates
-<<<<<<< HEAD
-simulation = 5 # 100 # time of simulations
-=======
 simulation = 100 # time of simulations
->>>>>>> refs/remotes/origin/main
 ATE_true = 5.0
 # initialize parameter value - training model
 epochs = 100

@@ -106,11 +106,7 @@ for k in range(len(p_vec)):
         mu_hat_mat[:, t:(t+1)] = mu_hat
         tau_hat_mat[:, t:(t+1)] = tau_hat
         
-<<<<<<< HEAD
     path_inner_pi_hat = 'FAST_pi_hat_p_' + str(p) + '.csv'
-=======
-    path_inner_pi_hat = 'VFAST_pi_hat_p_' + str(p) + '.csv'
->>>>>>> refs/remotes/origin/main
     path_inner_mu_hat = 'FAST_mu_hat_p_' + str(p) + '.csv'
     path_inner_tau_hat = 'FAST_tau_hat_p_' + str(p) + '.csv'
     
