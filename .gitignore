@@ -7,6 +7,13 @@ exp/exp1_method_compare/variable/
 exp/exp2_size_compare/data_simulation/
 exp/exp2_size_compare/result/
 exp/exp2_size_compare/variable/
+exp/exp3_application_image/data_simulation/
+exp/exp3_application_image/result/
+exp/exp3_application_image/variable/
+exp/exp3_application_image/data_raw/
+
+
+
 exp/exp4_application/data_simulation/
 exp/exp4_application/result/
 exp/exp4_application/variable/
