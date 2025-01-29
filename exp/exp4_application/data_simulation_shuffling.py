@@ -5,7 +5,7 @@ Created on Mon Jan 27 14:44:50 2025
 
 @author: Qishuo
 
-Double Deep Learning: creat multiple semi-synthetic datasets by shuffling
+Double Deep Learning: creat multiple semi-synthetic datasets by shuffling for application
 
 """
 
@@ -34,18 +34,17 @@ variable_entire = read_dataset_csv_to_numpy(path_outer, path_inner_variable)
 # set simulation parameters
 n_real = dataset_entire.shape[0]
 simulation = 100
-r = 4 # number of factors
 sigma_y = 0.25 # outcome noice level
 
 
 for t in range(simulation): 
-    index = np.random.choice(range(n_real), size=1000, replace=False)
+    index = np.random.choice(range(n_real), size=5000, replace=False)
     dataset_sim = pd.DataFrame(dataset_entire[index, :])
     variable_sim = pd.DataFrame(variable_entire[index, :])
     
     path_outer_sim = path_file + '/data_simulation/'
-    path_inner_sim = '/data_sim_' + str(t) + '.csv'
+    path_inner_sim = 'data_sim_' + str(t) + '.csv'
     dataset_sim.to_csv(path_outer_sim + path_inner_sim, index=False)
-    path_inner_variable_sim = '/variable_sim_' + str(t) + '.csv'
+    path_inner_variable_sim = 'variable_sim_' + str(t) + '.csv'
     variable_sim.to_csv(path_outer_sim + path_inner_variable_sim, index=False)
     print("simulation:" + str(t))

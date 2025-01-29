@@ -15,4 +15,4 @@ module purge
 module load anaconda3/2024.2
 conda activate Double_Deep_Learning_env
 
-python run_FASTNN.py
+python run_FASTNN_application.py
