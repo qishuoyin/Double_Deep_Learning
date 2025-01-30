@@ -11,8 +11,11 @@ exp/exp3_application_image/data_simulation/
 exp/exp3_application_image/result/
 exp/exp3_application_image/variable/
 exp/exp3_application_image/data_raw/
-exp/exp4_application_health/nhanes_data/
 
+
+
+exp/exp4_application_health/
+exp/exp4_application_health/nhanes_data/
 
 exp/exp4_application_health/data_simulation/
 exp/exp4_application_health/result/
