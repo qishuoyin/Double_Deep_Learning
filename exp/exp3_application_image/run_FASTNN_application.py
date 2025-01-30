@@ -40,7 +40,7 @@ torch.manual_seed(seed)
 
 # intialize parameter value 
 n = 5000 # syntehtic dataset size
-simulation = 5 # 100 # time of simulations
+simulation = 100 # time of simulations
 
 
 # initialize parameter value - training model
