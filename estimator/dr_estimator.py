@@ -11,6 +11,7 @@ Double Deep Learning: double robust ATE estimator
 
 import numpy as np
 import scipy.stats 
+import torch
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -171,23 +172,23 @@ class DoubleRobustEst:
         return ite_hat
     
     
-    def dr_ate_est(self): 
+    # def dr_ate_est(self): 
         
-        '''
-        A function to estimate double robust average treatment effect (ATE)
+    #     '''
+    #     A function to estimate double robust average treatment effect (ATE)
 
-        Returns
-        -------
-        ate_hat : float
-            average treatment effect (ATE) estimation
-        '''
+    #     Returns
+    #     -------
+    #     ate_hat : float
+    #         average treatment effect (ATE) estimation
+    #     '''
         
-        ite_hat = self.dr_ite_est()
-        ate_hat = np.mean(ite_hat)
-        return ate_hat
+    #     ite_hat = self.dr_ite_est()
+    #     ate_hat = np.mean(ite_hat)
+    #     return ate_hat
     
     
-    def ate_ci_est(self, tail='both', alpha=0.05): 
+    def ate_est(self, tail='both', alpha=0.05): 
         
         '''
         A function to compute confidence interval of average treatment effect (ATE) estimation
@@ -196,6 +197,7 @@ class DoubleRobustEst:
         ----------
         tail : str (default to be 'both')
             whether the confidence interval is both tailed or one tailed
+            'no' for not return confidence interval only return ATE estimation
             'both' for two tailed confidence interval
             'left' for left tailed confidence interval
             'right' for right tailed confidence interval
@@ -210,24 +212,27 @@ class DoubleRobustEst:
         
         ite_hat = self.dr_ite_est()
         n = len(ite_hat)
-        ite_mean = self.dr_ate_est()
+        ate_hat = np.mean(ite_hat)
         ite_sd = np.std(ite_hat)
+        
+        if tail == 'no':
+            return ate_hat, None, None
         
         if tail == 'both': 
             z_critical = scipy.stats.norm.ppf(alpha/2) 
-            ci_low_est = ite_mean + z_critical*ite_sd / np.sqrt(n)
-            ci_up_est = ite_mean - z_critical*ite_sd / np.sqrt(n)
-            return ci_low_est, ci_up_est
+            ci_low_est = ate_hat + z_critical*ite_sd / np.sqrt(n)
+            ci_up_est = ate_hat - z_critical*ite_sd / np.sqrt(n)
+            return ate_hat, ci_low_est, ci_up_est
         
         elif tail == 'left': 
             z_critical = scipy.stats.norm.ppf(alpha) 
-            ci_low_est = ite_mean + z_critical*ite_sd / np.sqrt(n)
-            ci_up_est = ite_mean
-            return ci_low_est, ci_up_est
+            ci_low_est = ate_hat + z_critical*ite_sd / np.sqrt(n)
+            ci_up_est = ate_hat
+            return ate_hat, ci_low_est, ci_up_est
         
         elif tail == 'right': 
             z_critical = scipy.stats.norm.ppf(alpha) 
-            ci_low_est = ite_mean
-            ci_up_est = ite_mean - z_critical*ite_sd / np.sqrt(n)
-            return ci_low_est, ci_up_est
+            ci_low_est = ate_hat
+            ci_up_est = ate_hat - z_critical*ite_sd / np.sqrt(n)
+            return ate_hat, ci_low_est, ci_up_est
         

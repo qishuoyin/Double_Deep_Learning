@@ -63,6 +63,7 @@ class NNModelTrain:
         self.loss_fn = loss_fn
         self.optimizer = optimizer
 
+
     def train(self, dataloader, logistic, regularization_type=None, lambda_reg=1, penalty_weight=None, reg_tau=0.005):
         
         '''

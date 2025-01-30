@@ -43,7 +43,7 @@ torch.manual_seed(seed)
 
 # intialize parameter value 
 p_vec = [10, 100, 200, 500, 1000, 2000, 5000] # number of covariates
-n_vec = [100, 500, 1000, 2000, 5000] # size of dataset
+n_vec = [100, 500, 1000, 5000] # size of dataset
 
 
 simulation = 100 # time of simulations
@@ -99,8 +99,7 @@ for k in range(len(p_vec)):
         
         # run functions
         estimator = DDL(X, T, Y)
-        ATE_hat = estimator.ate_hat()
-        ATE_ci_low, ATE_ci_up = estimator.ate_ci(tail='both', alpha=0.05)
+        ATE_hat, ATE_ci_low, ATE_ci_up = estimator.ate_hat_ci(tail='both', alpha=0.05)
         pi_hat = estimator.pi_hat()
         mu_hat = estimator.mu_hat()
         tau_hat = estimator.tau_hat()

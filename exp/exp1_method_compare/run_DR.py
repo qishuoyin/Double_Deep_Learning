@@ -39,7 +39,7 @@ torch.manual_seed(seed)
 
 # intialize parameter value
 p_vec = [10, 50, 100, 500, 1000, 5000, 10000] # number of covariates
-simulation = 100 # time of simulations
+simulation = 5  # time of simulations
 ATE_true = 5.0
 
 # data and file path

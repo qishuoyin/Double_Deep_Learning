@@ -27,8 +27,10 @@ import os
 path_file = os.path.dirname(__file__)
 path_file_parent = os.path.dirname(os.getcwd())
 
+
 # run script on gpu if possible
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 
 # set seed
 seed = 2024
@@ -38,7 +40,7 @@ torch.manual_seed(seed)
 
 # intialize parameter value 
 n = 5000 # syntehtic dataset size
-simulation = 100 # time of simulations
+simulation = 5 # 100 # time of simulations
 
 
 # initialize parameter value - training model
@@ -63,7 +65,6 @@ ATE_ci_low_mat = np.zeros(simulation)
 ATE_ci_up_mat = np.zeros(simulation)
 ATE_true_mat = np.zeros(simulation)
 
-
 coverage_count = 0
 # only to check the preciseness of the codes
 pi_hat_mat = np.zeros((n, simulation))
@@ -87,8 +88,7 @@ for t in range(simulation):
     
     # run functions
     estimator = DDL(X, T, Y, factor=False)
-    ATE_hat = estimator.ate_hat()
-    ATE_ci_low, ATE_ci_up = estimator.ate_ci(tail='both', alpha=0.05)
+    ATE_hat, ATE_ci_low, ATE_ci_up = estimator.ate_hat_ci(tail='both', alpha=0.05)
     pi_hat = estimator.pi_hat()
     mu_hat = estimator.mu_hat()
     tau_hat = estimator.tau_hat()

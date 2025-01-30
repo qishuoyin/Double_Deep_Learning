@@ -18,6 +18,7 @@ from collections import OrderedDict
 # run script on gpu if possible
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
+
 # network structure
 # base factor augmented sparse throughput structure
 class FactorAugmentedSparseThroughputNN(nn.Module):

@@ -21,6 +21,7 @@ from model.model_VanillaNN import VanillaNetBase
 from estimator.train_model import NNModelTrain
 from estimator.dr_estimator import DoubleRobustEst
 
+
 # Double Robust Deep Learning Factor Model ATE estimator
 class DDL: 
     def __init__(self, 
@@ -88,14 +89,19 @@ class DDL:
         return est
     
     
-    def ate_hat(self): 
-        est = self.DDL_est()
-        return est.dr_ate_est()
+    # def ate_hat(self): 
+    #     est = self.DDL_est()
+    #     return est.dr_ate_est()
     
     
-    def ate_ci(self, tail='both', alpha=0.05): 
+    # def ate_ci(self, tail='both', alpha=0.05): 
+    #     est = self.DDL_est()
+    #     return est.ate_ci_est(tail, alpha)
+    
+    
+    def ate_hat_ci(self, tail='both', alpha=0.05): 
         est = self.DDL_est()
-        return est.ate_ci_est(tail, alpha)
+        return est.ate_est(tail, alpha)
     
     
     def pi_hat(self): 

@@ -26,8 +26,10 @@ import os
 path_file = os.path.dirname(__file__)
 path_file_parent = os.path.dirname(os.getcwd())
 
+
 # run script on gpu if possible
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 
 # set seed
 seed = 2024
@@ -37,7 +39,7 @@ torch.manual_seed(seed)
 
 # intialize parameter value 
 p_vec = [10, 50, 100, 500, 1000, 5000, 10000] # number of covariates
-simulation = 100 # time of simulations
+simulation = 5 # 100 # time of simulations
 ATE_true = 5.0
 # initialize parameter value - training model
 epochs = 100
@@ -47,6 +49,7 @@ r = 4
 r_bar = 10
 L = 4
 N = 300
+
 
 # data and file path
 path_data_outer = path_file + '/data_simulation/'
@@ -88,8 +91,7 @@ for k in range(len(p_vec)):
         
         # run functions
         estimator = DDL(X, T, Y)
-        ATE_hat = estimator.ate_hat()
-        ATE_ci_low, ATE_ci_up = estimator.ate_ci(tail='both', alpha=0.05)
+        ATE_hat, ATE_ci_low, ATE_ci_up = estimator.ate_hat_ci(tail='both', alpha=0.05)
         pi_hat = estimator.pi_hat()
         mu_hat = estimator.mu_hat()
         tau_hat = estimator.tau_hat()
