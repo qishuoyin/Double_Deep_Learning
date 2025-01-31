@@ -28,12 +28,21 @@ This repository contains four subfolders:
 
 
 ## Environment
-The environment *Double Deep Learning* of this repository can be found in the file ```Double_Deep_Learning.yml```, which can be directly installed by 
+The information to set up the environment *Double Deep Learning* of this repository can be found in the file ```Double_Deep_Learning.yml```, which can be directly installed by 
 ```
 conda env create -f environment.yml
 ```
 because the first line of the ```.yml``` file sets the new environment's name. 
-
+For simplicity, one can also set the environment by
+```
+pip install numpy==1.26.4
+pip install pandas==2.2.3
+pip install torch==2.5.1
+pip install matplotlib==3.10.0
+pip install scipy==1.15.1
+pip install econml==0.15.1
+pip install ganite
+```
 
 
 
