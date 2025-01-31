@@ -5,6 +5,7 @@ This is the repository for the package and experiment implementation for the pro
 
 - [Introduction](#introduction)
 - [Environment](#Envrionment)
+- [Example](#Example)
 
 ## Introduction
 This repository contains four subfolders: 
@@ -54,7 +55,7 @@ People can also run experiments anywhere else, but they may want to change the r
 ```
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 ```
-and printing out the current directories are always helpful by executing the following chunk. 
+Printing out the current directories is always helpful by executing the following chunk. 
 ```
 path_file = os.path.dirname(__file__)
 path_file_parent = os.path.dirname(os.getcwd())
@@ -62,5 +63,16 @@ print("current directory: " + path_file)
 print("parent directory:" + path_file_parent)
 ```
 
+## Example
+We give a simple example of implementing the double deep learning algorithm by leveraging our functions here. Suppose the new python file is created under a  subfolder of ```exp``` and the covariate $X$, treatment $T$, and outcome $Y$ are already loaded as NumPy arrays. Then, one can estimate the average treatment effect of this dataset by executing the following chunk
+```
+import numpy as np
+import pandas as pd
+import torch
+from estimator.ddl_estimator import DDL
 
+# estimate ATE and its confidence interval (CI)
+estimator = DDL(X, T, Y)
+ATE_hat, ATE_ci_low, ATE_ci_up = estimator.ate_hat_ci(tail='both', alpha=0.05)
+```
 
