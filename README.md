@@ -28,4 +28,4 @@ This repository contains four subfolders:
 
 
 ## Environment
-The environment of this repository is saved in the file '''Double_Deep_Learning.yml'''. 
+The environment of this repository is saved in the file ```Double_Deep_Learning.yml```. 
