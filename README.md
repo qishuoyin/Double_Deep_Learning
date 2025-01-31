@@ -4,6 +4,7 @@ This is the repository for the package and experiment implementation for the pro
 ## Table of Contents
 
 - [Introduction](#introduction)
+- [Environment](#Envrionment)
 
 ## Introduction
 This repository contains four subfolders: 
@@ -24,3 +25,7 @@ This repository contains four subfolders:
 - exp3_application_image : contains files to implement experiments comparing Double Deep Learning (DDL), Vanilla Neural Networks with L2 regularization (Vanilla-NN), Generative Adversarial Nets for inference of Individualized Treatment Effects (GANITE), Causal Forest (CF), Double Robust Forest Model (DR), and Double Machine Learning Forest Model (DML) on a semi-synthetic dataset by [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) dataset. 
 
 (4) utility: it contains utility_data.py to read and prepare datasets for the experiments and functions to compute the hyper-parameters in the implemented methods. 
+
+
+## Environment
+The environment of this repository is saved in the file '''Double_Deep_Learning.yml'''. 
