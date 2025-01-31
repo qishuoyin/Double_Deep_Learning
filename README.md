@@ -44,9 +44,23 @@ pip install econml==0.15.1
 pip install ganite
 ```
 
-
-
-
+Meanwhile, if people want to conduct their own experiments with the use of this repository, one of the easiest ways is to create a subfolder under the folder ```exp``` and be sure to include the following commands to call the utility functions and the double deep learning estimator
+```
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+```
+People can also run experiments anywhere else, but they may want to change the relative paths set in this repository a little bit by editing the command 
+```
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+```
+and printing out the current directories are always helpful by executing the following chunk. 
+```
+path_file = os.path.dirname(__file__)
+path_file_parent = os.path.dirname(os.getcwd())
+print("current directory: " + path_file)
+print("parent directory:" + path_file_parent)
+```
 
 
 
