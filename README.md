@@ -42,6 +42,7 @@ pip install torch==2.5.1
 pip install matplotlib==3.10.0
 pip install scipy==1.15.1
 pip install econml==0.15.1
+pip install sklearn==1.5.2
 pip install ganite
 ```
 
