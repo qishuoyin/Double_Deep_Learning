@@ -75,4 +75,4 @@ from estimator.ddl_estimator import DDL
 estimator = DDL(X, T, Y)
 ATE_hat, ATE_ci_low, ATE_ci_up = estimator.ate_hat_ci(tail='both', alpha=0.05)
 ```
-
+You may change the confidence interval to be one-sided by changing the value of ```tail``` to be ```'left'``` or ```'right'```. Meanwhile, the confidence interval can also be changed by altering the value of the variable ```alpha```. 
