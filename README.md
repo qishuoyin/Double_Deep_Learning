@@ -20,7 +20,7 @@ This repository contains four subfolders:
 - ```dr_estimator.py``` : gives the structure of the doubly robust estimator.
 - ```ddl_estimator.py``` : gives the structure of the double deep learning estimator. 
 
-(3) exp: it contains three subfolders for the experiments in the project (paper). both ```$\textit{.py}$``` and ```$\textit{.sh}$``` files are given to implement methods and submit jobs to clusters. 
+(3) exp: it contains three subfolders for the experiments in the project (paper). both ```.py$``` and ```.sh$``` files are given to implement methods and submit jobs to clusters. 
 - ```exp1_method_compare``` : contains files to generate datasets and implement experiments comparing Double Deep Learning (DDL), Vanilla Neural Networks with L2 regularization (Vanilla-NN), Generative Adversarial Nets for inference of Individualized Treatment Effects (GANITE), Causal Forest (CF), Double Robust Forest Model (DR), and Double Machine Learning Forest Model (DML) on fixed sample size datasets with various covariate dimension. 
 - ```exp2_size_compare``` : contains files to generate datasets and implement experiments comparing the performance of Double Deep Learning (DDL) on datasets with various sample sizes. 
 - ```exp3_application_image``` : contains files to implement experiments comparing Double Deep Learning (DDL), Vanilla Neural Networks with L2 regularization (Vanilla-NN), Generative Adversarial Nets for inference of Individualized Treatment Effects (GANITE), Causal Forest (CF), Double Robust Forest Model (DR), and Double Machine Learning Forest Model (DML) on a semi-synthetic dataset by [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) dataset. 
