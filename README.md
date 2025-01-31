@@ -28,7 +28,7 @@ This repository contains four subfolders:
 
 
 ## Environment
-The environment \emph{Double Deep Learning} of this repository can be found in the file ```Double_Deep_Learning.yml```, which can be directly installed by 
+The environment *Double Deep Learning* of this repository can be found in the file ```Double_Deep_Learning.yml```, which can be directly installed by 
 ```
 conda env create -f environment.yml
 ```
