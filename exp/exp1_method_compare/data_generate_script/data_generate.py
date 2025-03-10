@@ -108,7 +108,7 @@ p_vec = [10, 50, 100, 500, 1000, 5000, 10000] # number of covariates
 r = 4 # number of factors
 sigma_y = 0.25 # outcome noice level
 n = 5000 # number of observations
-simulation = 10 # 100 # time of simulations
+simulation = 100 # time of simulations
 
 # data generating process
 for p in p_vec:
