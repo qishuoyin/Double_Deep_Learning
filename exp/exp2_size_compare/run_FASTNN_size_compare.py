@@ -39,7 +39,8 @@ torch.manual_seed(seed)
 
 # intialize parameter value 
 p_vec = [10, 100, 200, 500, 1000, 2000, 5000] # number of covariates
-n_vec = [100, 500, 1000, 5000] # size of dataset
+n_vec = [1000, 2000, 3000, 4000, 5000] # size of dataset
+# n_vec = [100, 500, 1000, 2000, 5000] # size of dataset
 
 
 simulation = 100 # time of simulations
@@ -51,7 +52,7 @@ learning_rate = 0.0001
 r = 4
 r_bar = 10
 L = 4
-N = 300
+N = 400
 
 
 # data and file path

@@ -48,7 +48,7 @@ learning_rate = 0.0001
 r = 4
 r_bar = 10
 L = 4
-N = 300
+N = 400
 
 
 # data and file path

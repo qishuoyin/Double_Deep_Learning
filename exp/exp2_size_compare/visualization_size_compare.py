@@ -21,15 +21,16 @@ path_file_parent = os.path.dirname(os.getcwd())
 
 # Define file paths
 file_paths = {
-    'n=100': path_file + '/result/FAST_MSE_n_100.csv',
-    'n=500': path_file + '/result/FAST_MSE_n_500.csv',
     'n=1000': path_file + '/result/FAST_MSE_n_1000.csv',
+    'n=2000': path_file + '/result/FAST_MSE_n_2000.csv',
+    'n=3000': path_file + '/result/FAST_MSE_n_3000.csv',
+    'n=4000': path_file + '/result/FAST_MSE_n_4000.csv',
     'n=5000': path_file + '/result/FAST_MSE_n_5000.csv',
 }
 
 # Define the number of covariate dimensions corresponding to the MSE values
 p_vec = [10, 50, 100, 500, 1000, 5000, 10000]
-# n_vec = [100, 500, 1000, 5000]
+# n_vec = [1000, 2000, 3000, 4000, 5000] # size of dataset
 
 # Load data and process MSE values
 data = {}
@@ -40,7 +41,7 @@ for method, path in file_paths.items():
     data[method] = df.reset_index(drop=True)  # Reset index
 
 # Merge data based on corrected dimensions
-merged_data = pd.DataFrame({"Dimension": data["n=100"]["Dimension"]})
+merged_data = pd.DataFrame({"Dimension": data["n=1000"]["Dimension"]})
 for method, df in data.items():
     merged_data[method] = df["MSE"]
 
