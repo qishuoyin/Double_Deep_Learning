@@ -110,7 +110,7 @@ n_vec = [1000, 2000, 3000, 4000, 5000] # size of dataset
 # n_vec = [100, 500, 1000, 2000, 5000] # size of dataset
 r = 4 # number of factors
 sigma_y = 0.25 # outcome noice level
-simulation = 5 # 100 # time of simulations
+simulation = 100 # time of simulations
 
 
 # data generating process
