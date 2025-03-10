@@ -204,7 +204,74 @@ class NNModelTrain:
         return test_err
 
 
-    def fit(self, dataloader_train, logistic, regularization_type=None, lambda_reg=1, penalty_weight=None, tau0=0.005, dataloader_test=None):
+    # def fit(self, dataloader_train, logistic, regularization_type=None, lambda_reg=1, penalty_weight=None, tau0=0.005, dataloader_test=None):
+        
+    #     '''
+    #     A function to train model on a given dataloader for a series of epoches
+        
+    #     ...
+    #     Parameters
+    #     ----------
+    #     dataloader_train : torch.utils.data.dataloader.DataLoader
+    #         dataloader of training set
+    #     logistic : bool
+    #         whether the model is a classification
+    #         'True' for classification model
+    #         'False' for regression model
+    #     regularization_type : NoneType or str
+    #         'None' for no regularization in Vanilla NN model
+    #         'L1' for L1 regularization in Vanilla NN model
+    #         'L2' for L2 regularization in Vanilla NN model
+    #     lambda_reg : float (default to be 1)
+    #         regularization parameter in Vanilla NN model if regularization_type is not None
+    #     penalty_weight : NoneType or float
+    #         'None' for no penalty in FAST NN model
+    #         float for the penalty value in FAST NN model
+    #     reg_tau : float (default to be 0.005)
+    #         clipping threshold in FAST NN model if penalty_weight is not None
+    #     dataloader_train : torch.utils.data.dataloader.DataLoader (default to be None)
+    #          dataloader of test set
+    #     '''
+        
+    #     anneal_rate = (tau0 * 20 - tau0) / self.epochs
+    #     anneal_tau = tau0 * 20
+        
+    #     train_err_vec = []
+        
+    #     for epoch in range(self.epochs):
+    #         print(f"Epoch {epoch+1}")
+            
+    #         # apply L1 regularization
+    #         if regularization_type == 'L1':
+    #             train_err = self.train(dataloader_train, logistic, regularization_type='L1', lambda_reg=1)
+
+    #         # apply L2 regularization
+    #         elif regularization_type == 'L2':
+    #             train_err = self.train(dataloader_train, logistic, regularization_type='L2', lambda_reg=1)
+            
+    #         # apply clipping regularization
+    #         if penalty_weight is not None:
+    #             anneal_tau -= anneal_rate
+    #             train_err = self.train(dataloader_train, logistic, penalty_weight=penalty_weight, reg_tau=anneal_tau)
+    #             #print("reg_tau:" + str(anneal_tau))
+                
+    #         if regularization_type == None and penalty_weight == None: 
+    #             train_err = self.train(dataloader_train, logistic)
+            
+    #         print(f"train error = {train_err}")
+    #         print("-------------------------------")
+    #         train_err_vec.append(train_err)
+            
+        
+    #     # plt.figure(figsize=(16, 8))
+    #     # plt.plot(train_err_vec, color='red')
+    #     # plt.savefig(f"train loss.pdf")
+    #     # plt.close()
+        
+    #     return self.model
+    
+    
+    def fit(self, dataloader_train, dataloader_val, logistic, regularization_type=None, lambda_reg=1, penalty_weight=None, tau0=0.005, dataloader_test=None):
         
         '''
         A function to train model on a given dataloader for a series of epoches
@@ -214,6 +281,8 @@ class NNModelTrain:
         ----------
         dataloader_train : torch.utils.data.dataloader.DataLoader
             dataloader of training set
+        dataloader_val : torch.utils.data.dataloader.DataLoader
+            dataloader of validation set
         logistic : bool
             whether the model is a classification
             'True' for classification model
@@ -237,6 +306,13 @@ class NNModelTrain:
         anneal_tau = tau0 * 20
         
         train_err_vec = []
+        val_err_vec = []
+        
+        # early stopping parameters
+        patience = 10 # Number of epochs to wait before stopping
+        min_delta = 0 # Minimum change in loss to qualify as an improvement
+        patience_counter = 0
+        best_err = float('inf')
         
         for epoch in range(self.epochs):
             print(f"Epoch {epoch+1}")
@@ -244,29 +320,39 @@ class NNModelTrain:
             # apply L1 regularization
             if regularization_type == 'L1':
                 train_err = self.train(dataloader_train, logistic, regularization_type='L1', lambda_reg=1)
+                val_err = self.test(dataloader_val, logistic, regularization_type='L1', lambda_reg=1)
 
             # apply L2 regularization
             elif regularization_type == 'L2':
                 train_err = self.train(dataloader_train, logistic, regularization_type='L2', lambda_reg=1)
+                val_err = self.test(dataloader_val, logistic, regularization_type='L2', lambda_reg=1)
             
             # apply clipping regularization
             if penalty_weight is not None:
                 anneal_tau -= anneal_rate
                 train_err = self.train(dataloader_train, logistic, penalty_weight=penalty_weight, reg_tau=anneal_tau)
+                val_err = self.test(dataloader_val, logistic, penalty_weight=penalty_weight, reg_tau=anneal_tau)
                 #print("reg_tau:" + str(anneal_tau))
                 
             if regularization_type == None and penalty_weight == None: 
                 train_err = self.train(dataloader_train, logistic)
+                val_err = self.test(dataloader_val, logistic)
             
             print(f"train error = {train_err}")
+            print(f"validation error = {val_err}")
             print("-------------------------------")
             train_err_vec.append(train_err)
+            val_err_vec.append(val_err)
             
-        
-        # plt.figure(figsize=(16, 8))
-        # plt.plot(train_err_vec, color='red')
-        # plt.savefig(f"train loss.pdf")
-        # plt.close()
+            # implement early stopping
+            if val_err < best_err - min_delta:
+                best_err = val_err
+                patience_counter = 0
+            else:
+                patience_counter += 1
+                if patience_counter >= patience:
+                    print(f"Early stopping at epoch {epoch}")
+                    break
         
         return self.model
 

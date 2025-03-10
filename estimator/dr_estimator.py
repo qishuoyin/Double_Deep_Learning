@@ -10,7 +10,8 @@ Double Deep Learning: double robust ATE estimator
 """
 
 import numpy as np
-import scipy.stats 
+import scipy.stats
+from sklearn.model_selection import train_test_split 
 import torch
 import sys
 from pathlib import Path
@@ -37,7 +38,7 @@ class DoubleRobustEst:
                  X, T, Y,
                  batchsize,
                  estimator_propensity,
-                 estimator_outcome_treatment,
+                 estimator_outcome_treat,
                  estimator_outcome_control, 
                  regularization_type=None, 
                  lambda_reg=1, 
@@ -55,7 +56,7 @@ class DoubleRobustEst:
         self.Y = Y
         self.batchsize = batchsize
         self.estimator_propensity = estimator_propensity
-        self.estimator_outcome_treatment = estimator_outcome_treatment
+        self.estimator_outcome_treat = estimator_outcome_treat
         self.estimator_outcome_control = estimator_outcome_control
         self.regularization_type = regularization_type
         self.lambda_reg=lambda_reg
@@ -79,10 +80,18 @@ class DoubleRobustEst:
             (n, ) matrix of propensity estimation
         '''
         
-        torch_propensity = data_to_torch(self.X, self.T.reshape(-1, 1))
-        loader_propensity = data_torch_dataloader(torch_propensity, self.batchsize)
-        propensity_fitted = self.estimator_propensity.fit(loader_propensity, logistic=True,  regularization_type=self.regularization_type, penalty_weight=self.penalty_weight) # fit propensity model
-        pi_hat = self.estimator_propensity.predict(propensity_fitted, self.X).cpu().numpy() # predict propensity score
+        X = self.X
+        T = self.T
+        X_train, X_val, T_train, T_val = train_test_split(X, T, test_size=0.2)
+        # torch_propensity = data_to_torch(X, T.reshape(-1, 1))
+        torch_propensity_train = data_to_torch(X_train, T_train.reshape(-1, 1))
+        torch_propensity_val = data_to_torch(X_val, T_val.reshape(-1, 1))
+        # loader_propensity = data_torch_dataloader(torch_propensity, self.batchsize)
+        loader_propensity_train = data_torch_dataloader(torch_propensity_train, self.batchsize)
+        loader_propensity_val = data_torch_dataloader(torch_propensity_val, self.batchsize)
+        
+        propensity_fitted = self.estimator_propensity.fit(loader_propensity_train, loader_propensity_val, logistic=True,  regularization_type=self.regularization_type, penalty_weight=self.penalty_weight) # fit propensity model
+        pi_hat = self.estimator_propensity.predict(propensity_fitted, X).cpu().numpy() # predict propensity score
         
         # adjust propensity estimation by truncation
         pi_hat[pi_hat < 0.01] = 0.01
@@ -90,7 +99,7 @@ class DoubleRobustEst:
         return pi_hat
     
     
-    def outcome_treatment_est(self): 
+    def outcome_treat_est(self): 
         
         '''
         A function to estimate outcome for treatment
@@ -98,13 +107,22 @@ class DoubleRobustEst:
         Returns
         -------
         mu1_hat : numpy.ndarray
-            (n, ) matrix of outcome for treatment estimation
+            (number of T==1, ) matrix of outcome for treatment estimation
         '''
         
-        torch_outcome_treatment = data_to_torch(self.X[self.T == 1], self.Y[self.T == 1].reshape(-1, 1))
-        loader_outcome_treatment = data_torch_dataloader(torch_outcome_treatment, self.batchsize)
-        outcome_treatment_fitted = self.estimator_outcome_treatment.fit(loader_outcome_treatment, logistic=False, regularization_type=self.regularization_type, penalty_weight=self.penalty_weight)  # outcome for treatment model
-        mu1_hat = self.estimator_outcome_treatment.predict(outcome_treatment_fitted, self.X).cpu().numpy() # predict outcome for treatment
+        X = self.X
+        X_treat = self.X[self.T == 1]
+        Y_treat = self.Y[self.T == 1]
+        X_treat_train, X_treat_val, Y_treat_train, Y_treat_val = train_test_split(X_treat, Y_treat, test_size=0.2)
+        # torch_outcome_treat = data_to_torch(X_treat, Y_treat.reshape(-1, 1))
+        torch_outcome_treat_train = data_to_torch(X_treat_train, Y_treat_train.reshape(-1, 1))
+        torch_outcome_treat_val = data_to_torch(X_treat_val, Y_treat_val.reshape(-1, 1))
+        # loader_outcome_treat = data_torch_dataloader(torch_outcome_treat, self.batchsize)
+        loader_outcome_treat_train = data_torch_dataloader(torch_outcome_treat_train, self.batchsize)
+        loader_outcome_treat_val = data_torch_dataloader(torch_outcome_treat_val, self.batchsize)
+        
+        outcome_treat_fitted = self.estimator_outcome_treat.fit(loader_outcome_treat_train, loader_outcome_treat_val, logistic=False, regularization_type=self.regularization_type, penalty_weight=self.penalty_weight)  # outcome for treatment model
+        mu1_hat = self.estimator_outcome_treat.predict(outcome_treat_fitted, X).cpu().numpy() # predict outcome for treatment
         return mu1_hat
     
     
@@ -116,13 +134,22 @@ class DoubleRobustEst:
         Returns
         -------
         mu0_hat : numpy.ndarray
-            (n, ) matrix of outcome for control estimation
+            (number of T==0, ) matrix of outcome for control estimation
         '''
         
-        torch_outcome_control = data_to_torch(self.X[self.T == 0], self.Y[self.T == 0].reshape(-1, 1))
-        loader_outcome_control = data_torch_dataloader(torch_outcome_control, self.batchsize)
-        outcome_control_fitted = self.estimator_outcome_control.fit(loader_outcome_control, logistic=False, regularization_type=self.regularization_type, penalty_weight=self.penalty_weight) # outcome for control model
-        mu0_hat = self.estimator_outcome_control.predict(outcome_control_fitted, self.X).cpu().numpy() # predict outcome for control
+        X = self.X
+        X_control = self.X[self.T == 0]
+        Y_control = self.Y[self.T == 0]
+        X_control_train, X_control_val, Y_control_train, Y_control_val = train_test_split(X_control, Y_control, test_size=0.2)
+        # torch_outcome_control = data_to_torch(X_control, Y_control.reshape(-1, 1))
+        torch_outcome_control_train = data_to_torch(X_control_train, Y_control_train.reshape(-1, 1))
+        torch_outcome_control_val = data_to_torch(X_control_val, Y_control_val.reshape(-1, 1))
+        # loader_outcome_control = data_torch_dataloader(torch_outcome_control, self.batchsize)
+        loader_outcome_control_train = data_torch_dataloader(torch_outcome_control_train, self.batchsize)
+        loader_outcome_control_val = data_torch_dataloader(torch_outcome_control_val, self.batchsize)
+        
+        outcome_control_fitted = self.estimator_outcome_control.fit(loader_outcome_control_train, loader_outcome_control_val, logistic=False, regularization_type=self.regularization_type, penalty_weight=self.penalty_weight) # outcome for control model
+        mu0_hat = self.estimator_outcome_control.predict(outcome_control_fitted, X).cpu().numpy() # predict outcome for control
         return mu0_hat
     
     
@@ -151,7 +178,7 @@ class DoubleRobustEst:
             (n, ) matrix of effect from treatment estimation
         '''
         
-        return self.outcome_treatment_est() - self.outcome_control_est()
+        return self.outcome_treat_est() - self.outcome_control_est()
     
     
     def dr_ite_est(self): 
@@ -166,26 +193,10 @@ class DoubleRobustEst:
         '''
         
         pi_hat = self.propensity_est()
-        mu1_hat = self.outcome_treatment_est()
+        mu1_hat = self.outcome_treat_est()
         mu0_hat = self.outcome_control_est()
         ite_hat = (np.multiply(self.T, self.Y) / pi_hat.reshape(-1,) - np.multiply((1 - self.T), self.Y) / (1 - pi_hat.reshape(-1,))) - ( self.T - pi_hat.reshape(-1,) ) * ( mu1_hat.reshape(-1,) / pi_hat.reshape(-1,) + mu0_hat.reshape(-1,) / (1 - pi_hat.reshape(-1,)) )
         return ite_hat
-    
-    
-    # def dr_ate_est(self): 
-        
-    #     '''
-    #     A function to estimate double robust average treatment effect (ATE)
-
-    #     Returns
-    #     -------
-    #     ate_hat : float
-    #         average treatment effect (ATE) estimation
-    #     '''
-        
-    #     ite_hat = self.dr_ite_est()
-    #     ate_hat = np.mean(ite_hat)
-    #     return ate_hat
     
     
     def ate_est(self, tail='both', alpha=0.05): 

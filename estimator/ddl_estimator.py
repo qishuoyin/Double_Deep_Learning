@@ -89,16 +89,6 @@ class DDL:
         return est
     
     
-    # def ate_hat(self): 
-    #     est = self.DDL_est()
-    #     return est.dr_ate_est()
-    
-    
-    # def ate_ci(self, tail='both', alpha=0.05): 
-    #     est = self.DDL_est()
-    #     return est.ate_ci_est(tail, alpha)
-    
-    
     def ate_hat_ci(self, tail='both', alpha=0.05): 
         est = self.DDL_est()
         return est.ate_est(tail, alpha)
@@ -117,5 +107,11 @@ class DDL:
     def tau_hat(self): 
         est = self.DDL_est()
         return est.tau_est()
+    
+    
+    def Y_hat(self): 
+        est = self.DDL_est()
+        Y_hat = est.mu_est().reshape(-1) + self.T * est.tau_est().reshape(-1)
+        return Y_hat
     
         

@@ -107,8 +107,8 @@ def write_csv_dataset(p, r, n, sigma_y, simulation):
 p_vec = [10, 50, 100, 500, 1000, 5000, 10000] # number of covariates
 r = 4 # number of factors
 sigma_y = 0.25 # outcome noice level
-n = 1000 # number of observations
-simulation = 100 # time of simulations
+n = 5000 # number of observations
+simulation = 10 # 100 # time of simulations
 
 # data generating process
 for p in p_vec:

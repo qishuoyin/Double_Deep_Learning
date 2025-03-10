@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Sun Sep 29 17:26:06 2024
+Created on Thu Feb 20 12:48:25 2025
 
 @author: Qishuo
 
-Double Deep Learning: script to run ATE estimation by FASTNN model
+Double Deep Learning: Double Robust (DR) only on latent factors and throughout for ATE estimator
 
 """
 
@@ -18,7 +18,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from utility.utility_data import read_dataset_to_numpy
 from utility.utility_data import data_split_X_T_Y
-from estimator.ddl_estimator import DDL
+from econml.dr import DRLearner
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 import os
 
 
@@ -30,34 +31,34 @@ path_file_parent = os.path.dirname(os.getcwd())
 # run script on gpu if possible
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-
 # set seed
 seed = 2024
 np.random.seed(seed)
 torch.manual_seed(seed)
 
 
-# intialize parameter value 
+# intialize parameter value
 p_vec = [10, 50, 100, 500, 1000, 5000, 10000] # number of covariates
-simulation = 10 # 100 # time of simulations
-ATE_true = 5.0
-# initialize parameter value - training model
-epochs = 100
-batchsize = 64
-learning_rate = 0.0001
 r = 4
-r_bar = 10
-L = 4
-N = 300
-
+simulation = 5 # 100 # time of simulations
+ATE_true = 5.0
 
 # data and file path
 path_data_outer = path_file + '/data_simulation/'
 path_result_outer = path_file + '/result/'
-path_variable_outer = path_file + '/variable/'
 
 
-# run simulation
+# generate factors, loading matrix and idiosyncratic component
+def generate_factor(X, r): 
+    n = X.shape[0]
+    eigenvectors, _, _ = np.linalg.svd(X, full_matrices=True)
+    f = np.sqrt(n) * eigenvectors[:, 0:r] # latent factors
+    B = 1/n * np.transpose(X) @ f # loading matrix
+    u = X - f @ np.transpose(B) # idiosyncratic component
+    return B, f, u
+
+
+# simulation for low dimensional case
 ATE_hat_mat = np.zeros((len(p_vec), simulation))
 ATE_ci_low_mat = np.zeros((len(p_vec), simulation))
 ATE_ci_up_mat = np.zeros((len(p_vec), simulation))
@@ -65,7 +66,6 @@ MSE_list = np.zeros(len(p_vec))
 ATE_ci_low_mean_list = np.zeros(len(p_vec))
 ATE_ci_up_mean_list = np.zeros(len(p_vec))
 coverage_list = np.zeros(len(p_vec))
-
 for k in range(len(p_vec)): 
     p = p_vec[k]
     print("p = " + str(p))
@@ -73,13 +73,6 @@ for k in range(len(p_vec)):
     print('-----------------------------------')
     
     coverage_count = 0
-    
-    # only to check the preciseness of the codes
-    n = 5000 # number of observations
-    pi_hat_mat = np.zeros((n, simulation))
-    mu_hat_mat = np.zeros((n, simulation))
-    tau_hat_mat = np.zeros((n, simulation))
-    
     for t in range(simulation): 
         print("t = " + str(t))
         print('-----------------------------------')
@@ -88,34 +81,26 @@ for k in range(len(p_vec)):
         # import data
         data = read_dataset_to_numpy(p, t, path_data_outer)
         X, T, Y = data_split_X_T_Y(data)
+        B, f, u = generate_factor(X, r)
         
         # run functions
-        estimator = DDL(X, T, Y)
-        ATE_hat, ATE_ci_low, ATE_ci_up = estimator.ate_hat_ci(tail='both', alpha=0.05)
-        pi_hat = estimator.pi_hat()
-        mu_hat = estimator.mu_hat()
-        tau_hat = estimator.tau_hat()
+        estimator = DRLearner(model_regression=RandomForestRegressor(n_estimators=100, max_depth=50),
+                              model_propensity=RandomForestClassifier(n_estimators=100, max_depth=50),
+                              model_final=RandomForestRegressor(n_estimators=100, max_depth=2),
+                              random_state=seed)
+        estimator.fit(Y=Y, T=T, X=f, W=None)
+        ATE_hat = estimator.ate(f)
+        ITE_hat = estimator.effect(f)
+        ATE_ci_low = np.percentile(ITE_hat, 2.5)
+        ATE_ci_up = np.percentile(ITE_hat, 97.5)
         
-        # save results & intermediate variables
+        # save results
         ATE_hat_mat[k, t] = ATE_hat
         ATE_ci_low_mat[k, t] =  ATE_ci_low
         ATE_ci_up_mat[k, t] =  ATE_ci_up
         if (ATE_ci_low <= ATE_true) and (ATE_true <= ATE_ci_up): 
             coverage_count += 1
         
-        # only to check the preciseness of the codes
-        pi_hat_mat[:, t:(t+1)] = pi_hat
-        mu_hat_mat[:, t:(t+1)] = mu_hat
-        tau_hat_mat[:, t:(t+1)] = tau_hat
-        
-    path_inner_pi_hat = 'FAST_pi_hat_p_' + str(p) + '.csv'
-    path_inner_mu_hat = 'FAST_mu_hat_p_' + str(p) + '.csv'
-    path_inner_tau_hat = 'FAST_tau_hat_p_' + str(p) + '.csv'
-    
-    pd.DataFrame(pi_hat_mat).to_csv(path_variable_outer + path_inner_pi_hat, index=False) # optinal intermediate result 
-    pd.DataFrame(mu_hat_mat).to_csv(path_variable_outer + path_inner_mu_hat, index=False) # optinal intermediate result 
-    pd.DataFrame(tau_hat_mat).to_csv(path_variable_outer + path_inner_tau_hat, index=False) # optinal intermediate result 
-    
     MSE = sum(np.square(ATE_hat_mat[k, :] - ATE_true)) / simulation
     MSE_list[k] = MSE
     ATE_ci_low_mean = np.mean(ATE_ci_low_mat[k, :])
@@ -125,13 +110,13 @@ for k in range(len(p_vec)):
     coverage = coverage_count / simulation
     coverage_list[k] = coverage
     
-path_inner_ATE = 'FAST_ATE_hat.csv'
-path_inner_ATE_ci_low = 'FAST_ATE_ci_low.csv'
-path_inner_ATE_ci_up = 'FAST_ATE_ci_up.csv'
-path_inner_MSE = 'FAST_MSE.csv'
-path_inner_ATE_ci_low_mean = 'FAST_ATE_ci_low_mean.csv'
-path_inner_ATE_ci_up_mean = 'FAST_ATE_ci_up_mean.csv'
-path_inner_coverage = 'FAST_coverage.csv'
+path_inner_ATE = 'factor_DR_ATE_hat.csv'
+path_inner_ATE_ci_low = 'factor_DR_ATE_ci_low.csv'
+path_inner_ATE_ci_up = 'factor_DR_ATE_ci_up.csv'
+path_inner_MSE = 'factor_DR_MSE.csv'
+path_inner_ATE_ci_low_mean = 'factor_DR_ATE_ci_low_mean.csv'
+path_inner_ATE_ci_up_mean = 'factor_DR_ATE_ci_up_mean.csv'
+path_inner_coverage = 'factor_DR_coverage.csv'
 pd.DataFrame(ATE_hat_mat).to_csv(path_result_outer + path_inner_ATE, index=False)  
 pd.DataFrame(ATE_ci_low_mat).to_csv(path_result_outer + path_inner_ATE_ci_low, index=False) 
 pd.DataFrame(ATE_ci_up_mat).to_csv(path_result_outer + path_inner_ATE_ci_up, index=False)
@@ -139,3 +124,4 @@ pd.DataFrame(MSE_list).to_csv(path_result_outer + path_inner_MSE, index=False)
 pd.DataFrame(ATE_ci_low_mean_list).to_csv(path_result_outer + path_inner_ATE_ci_low_mean, index=False)
 pd.DataFrame(ATE_ci_up_mean_list).to_csv(path_result_outer + path_inner_ATE_ci_up_mean, index=False)
 pd.DataFrame(coverage_list).to_csv(path_result_outer + path_inner_coverage, index=False)
+

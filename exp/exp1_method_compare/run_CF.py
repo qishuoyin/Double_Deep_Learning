@@ -38,7 +38,7 @@ torch.manual_seed(seed)
 
 # intialize parameter value
 p_vec = [10, 50, 100, 500, 1000, 5000, 10000] # number of covariates
-simulation = 5 # 100 # time of simulations
+simulation = 100 # time of simulations
 ATE_true = 5.0
 
 # data and file path
@@ -46,7 +46,7 @@ path_data_outer = path_file + '/data_simulation/'
 path_result_outer = path_file + '/result/'
 
 
-# simulation for low dimensional case
+# simulation
 ATE_hat_mat = np.zeros((len(p_vec), simulation))
 ATE_ci_low_mat = np.zeros((len(p_vec), simulation))
 ATE_ci_up_mat = np.zeros((len(p_vec), simulation))
