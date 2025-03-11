@@ -38,7 +38,8 @@ class DDL:
                  regularization_type=None, 
                  lambda_reg=1, 
                  penalty_weight=None, 
-                 reg_tau=0.005): 
+                 reg_tau=0.005, 
+                 stop=False): 
         
         self.X = X
         self.T = T
@@ -56,6 +57,7 @@ class DDL:
         self.lambda_reg=lambda_reg, 
         self.penalty_weight=penalty_weight, 
         self.reg_tau=reg_tau
+        self.stop=stop
         
     def DDL_est(self): 
         n = self.X.shape[0] # sample size
@@ -85,7 +87,6 @@ class DDL:
             optimizer_outcome = torch.optim.Adam(model_outcome.parameters(), lr=self.learning_rate)
             estimator_outcome = NNModelTrain(self.epochs, self.batchsize, model_outcome, loss_fn_outcome, optimizer_outcome)
             est = DoubleRobustEst(self.X, self.T, self.Y, self.batchsize, estimator_propensity, estimator_outcome, estimator_outcome, regularization_type='L2') 
-        
         return est
     
     
