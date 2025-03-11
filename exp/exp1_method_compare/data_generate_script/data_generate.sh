@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=data_generate_linear     # create a short name for your job
+#SBATCH --job-name=data_generate     # create a short name for your job
 #SBATCH --nodes=1                # node count
 #SBATCH --ntasks=1               # total number of tasks across all nodes
 #SBATCH --cpus-per-task=30        # cpu-cores per task (>1 if multithread tasks)
