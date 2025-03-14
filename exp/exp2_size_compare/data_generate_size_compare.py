@@ -106,10 +106,14 @@ def write_csv_dataset(p, r, n, sigma_y, simulation):
 
 # intialize parameter values - for low dimesional case
 p_vec = [10, 100, 200, 500, 1000, 2000, 5000] # number of covariates
+<<<<<<< HEAD
 # n_vec = [1000, 2000, 3000, 4000, 5000] # size of dataset
 # n_vec = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000] # size of dataset
 n_vec = [6000, 7000, 8000, 9000, 10000] # size of dataset
 # n_vec = [100, 500, 1000, 2000, 5000] # size of dataset
+=======
+n_vec = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000] # size of dataset
+>>>>>>> 97d9749e92cdb20eabcb79927c257e802a8d1038
 r = 4 # number of factors
 sigma_y = 0.25 # outcome noice level
 simulation = 100 # time of simulations
