@@ -1,21 +1,27 @@
 .DS_Store
 .env
 test.py
+
+exp/exp1_method_compare/data_generate_script/logs/
+exp/exp1_method_compare/logs/
 exp/exp1_method_compare/data_simulation/
 exp/exp1_method_compare/result/
 exp/exp1_method_compare/variable/
 
+exp/exp2_size_compare/logs/
 exp/exp2_size_compare/data_simulation/
 exp/exp2_size_compare/result/
 exp/exp2_size_compare/variable/
 exp/exp2_size_compare/draft/
 
+exp/exp3_application_image/logs/
 exp/exp3_application_image/data_simulation/
 exp/exp3_application_image/result/
 exp/exp3_application_image/variable/
 exp/exp3_application_image/data_raw/
 
 exp/exp4_application_health/
+exp/exp4_application_health/logs/
 exp/exp4_application_health/nhanes_data/
 exp/exp4_application_health/data_simulation/
 exp/exp4_application_health/result/
