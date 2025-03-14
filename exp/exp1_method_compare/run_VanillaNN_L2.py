@@ -81,6 +81,7 @@ for k in range(len(p_vec)):
     tau_hat_mat = np.zeros((n, simulation))
     
     for t in range(simulation): 
+        print("p = " + str(p))
         print("t = " + str(t))
         print('-----------------------------------')
         print('-----------------------------------')
