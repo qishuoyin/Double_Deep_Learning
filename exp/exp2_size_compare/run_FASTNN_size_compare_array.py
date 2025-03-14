@@ -13,7 +13,8 @@ Written in job array to run on a cluster
 import os
 
 idx = int(os.environ["SLURM_ARRAY_TASK_ID"])
-parameters = [1000, 2000, 3000, 4000, 5000] # size of dataset
+parameters = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000] # size of dataset
+# parameters = [1000, 2000, 3000, 4000, 5000] # size of dataset
 # parameters = [100, 500, 1000, 2000, 5000] # n_vec 
 myparam = parameters[idx]
 
